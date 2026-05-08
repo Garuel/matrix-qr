@@ -9,11 +9,8 @@ export class StatsService {
     logger.verbose("calculateStats");
     const { matrixQ, matrixR } = data;
     const allValues = [...matrixQ.flat(), ...matrixR.flat()];
-    logger.info("valores obtenidos de las matrices");
     const sum = allValues.reduce((acc, val) => acc + val, 0);
-    logger.info("suma obtenida de las matrices");
     const avg = sum / allValues.length;
-    logger.info("promedio obtenido de las matrices");
     const min = Math.min(...allValues);
     const max = Math.max(...allValues);
 

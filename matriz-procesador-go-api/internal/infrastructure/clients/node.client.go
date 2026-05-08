@@ -16,7 +16,7 @@ func NewNodeClient(url string) *NodeClient {
 }
 
 func (nc *NodeClient) SendToStats(data interface{}) (*http.Response, error) {
-    log.Println("Enviando datos a Node API: ", nc.apiUrl)
+    log.Println("Enviando datos a Node API")
     jsonData, err := json.Marshal(data)
     if err != nil { return nil, err }
     

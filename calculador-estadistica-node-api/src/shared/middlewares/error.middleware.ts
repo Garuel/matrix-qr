@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../domain/enum/custom-error.enum";
 import { CustomError } from "../domain/classes/custom-error.class";
+import { logger } from "../infrastructure/utils/logger.util";
 
 export const globalErrorHandler = (
   err: any,
@@ -8,9 +9,10 @@ export const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.error(
+  logger.error(
     `[${new Date().toISOString()}] ERROR en ${req.method} ${req.originalUrl}`,
   );
+
   console.error(err);
 
   if (err instanceof CustomError) {

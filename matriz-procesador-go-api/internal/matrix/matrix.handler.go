@@ -27,6 +27,7 @@ func (h *Handler) FactorizeQR(c *fiber.Ctx) error {
 	log.Printf("Matriz recibida")
     qrResult, err := h.service.FactorizeQR(req.Matrix)
     if err != nil {
+        log.Printf("Error factorizando QR: %v", err)
         return c.Status(500).JSON(fiber.Map{"error": "Factorización QR fallida"})
     }
 
@@ -38,7 +39,7 @@ func (h *Handler) FactorizeQR(c *fiber.Ctx) error {
         return c.Status(500).JSON(fiber.Map{"error": "No se pudo conectar con la API de Node"})
     }
     
-
+    defer resp.Body.Close()
 
     var nodeResponse interface{}
     if err := json.NewDecoder(resp.Body).Decode(&nodeResponse); err != nil {
@@ -47,7 +48,6 @@ func (h *Handler) FactorizeQR(c *fiber.Ctx) error {
 
 	log.Printf("Matriz enviada exitosamente")
 
-    defer resp.Body.Close()
 
     return c.Status(200).JSON(nodeResponse) 
 }
