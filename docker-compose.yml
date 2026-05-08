@@ -1,0 +1,19 @@
+services:
+  stats-node:
+    build: ./calculador-estadistica-node-api
+    container_name: stats-node-container
+    ports:
+      - "7787:7787"
+    environment:
+      - PORT=7787
+
+  go-api:
+    build: ./matriz-procesador-go-api
+    container_name: go-api-container
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_API_URL=http://stats-node:7787/stats/calculate
+    depends_on:
+      - stats-node

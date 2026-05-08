@@ -1,0 +1,19 @@
+.vscode/
+.idea/
+
+.env
+*.env
+
+# Node.js
+node_modules/
+dist/
+npm-debug.log*
+logs
+
+# Go
+bin/
+main
+matriz-procesador-go-api/main
+vendor/
+
+.docker-compose.override.yml
