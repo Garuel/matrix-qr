@@ -5,16 +5,14 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-Un reto técnico full-stack compuesto por dos microservicios interconectados y una interfaz web sencilla.
-
-El sistema toma una matriz matemática, realiza una **Factorización QR**, y luego calcula **estadísticas** sobre las matrices resultantes (suma, promedio, comprobación de matriz diagonal, etc.).
+El sistema toma una matriz matemática, realiza una Factorización QR, y luego calcula estadísticas sobre las matrices resultantes (suma, promedio, comprobación de matriz diagonal, etc.).
 
 ---
 
 ## 🏗️ Arquitectura del Sistema
 
 1. **Frontend (Cliente Web):** Una interfaz sencilla en HTML/JS que permite al usuario ingresar una matriz y enviarla a procesar.
-2. **Go API (Core Matemático - Puerto `3000`):** Recibe la matriz del frontend, realiza la **factorización QR** utilizando la librería matemática `gonum`, y envía los resultados a la API de Node para su análisis.
+2. **Go API (Core Matemático - Puerto `3000`):** Recibe la matriz del frontend, realiza la factorización QR utilizando la librería matemática `gonum`, y envía los resultados a la API de Node para su análisis.
 3. **Node.js API (Calculadora de Estadísticas - Puerto `7787`):** Recibe las matrices (Q y R), valida los datos enviados con `class-validator`, y calcula las estadísticas, estas son retornadas al servicio de Go para la respuesta final.
 
 ---
