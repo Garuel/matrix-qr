@@ -42,7 +42,8 @@ func (h *Handler) FactorizeQR(c *fiber.Ctx) error {
     defer resp.Body.Close()
 
     var nodeResponse interface{}
-    if err := json.NewDecoder(resp.Body).Decode(&nodeResponse); err != nil {
+    if err := json.NewDecoder(resp.Body).Decode(&nodeResponse);
+    err != nil {
         return c.Status(500).JSON(fiber.Map{"error": "Error al decodificar respuesta de Node"})
     }
 
