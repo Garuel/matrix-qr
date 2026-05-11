@@ -9,10 +9,15 @@ export class StatsService {
     logger.verbose("calculateStats");
     const { matrixQ, matrixR } = data;
     const allValues = [...matrixQ.flat(), ...matrixR.flat()];
-    const sum = allValues.reduce((acc, val) => acc + val, 0);
+    const { sum, min, max } = allValues.reduce(
+      (acc, val) => ({
+        sum: acc.sum + val,
+        min: val < acc.min ? val : acc.min,
+        max: val > acc.max ? val : acc.max,
+      }),
+      { sum: 0, min: allValues[0], max: allValues[0] },
+    );
     const avg = sum / allValues.length;
-    const min = Math.min(...allValues);
-    const max = Math.max(...allValues);
 
     return {
       max,
