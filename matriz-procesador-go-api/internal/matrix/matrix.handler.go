@@ -11,10 +11,10 @@ import (
 
 type Handler struct {
     service    Service
-    nodeClient *clients.NodeClient
+    nodeClient clients.NodeClientInterface
 }
 
-func NewHandler(s Service, nc *clients.NodeClient) *Handler {
+func NewHandler(s Service, nc clients.NodeClientInterface) *Handler {
     return &Handler{service: s, nodeClient: nc}
 }
 

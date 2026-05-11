@@ -23,7 +23,7 @@ func NewService() Service {
 func (s *service) FactorizeQR(input [][]float64) (models.MatrixResponse, error) {
 
     if len(input) == 0 || len(input[0]) == 0 {
-		return models.MatrixResponse{}, errors.New("input matrix cannot be empty")
+		return models.MatrixResponse{}, errors.New("La matriz de entrada no puede estar vacía")
 	}
 
     log.Println("Validando la matriz...")
@@ -35,9 +35,13 @@ func (s *service) FactorizeQR(input [][]float64) (models.MatrixResponse, error) 
 
     for _, row := range input {
 		if len(row) != cols {
-			return models.MatrixResponse{}, errors.New("all rows must have the same length")
+			return models.MatrixResponse{}, errors.New("Todas las filas tienen que tener la misma longitud")
 		}
 	}
+
+    if rows != cols {
+        return models.MatrixResponse{}, errors.New("La matriz debe ser cuadrada")
+    }
 
     log.Println("Matriz validada exitosamente!")
     
@@ -69,11 +73,11 @@ func (s *service) FactorizeQR(input [][]float64) (models.MatrixResponse, error) 
 }
 
 func matrixToSlice(m mat.Matrix) [][]float64 {
-    r, c := m.Dims()
-    matrix := make([][]float64, r)
-    for i := 0; i < r; i++ {
-        matrix[i] = make([]float64, c)
-        for j := 0; j < c; j++ {
+    rows, cols := m.Dims()
+    matrix := make([][]float64, rows)
+    for i := 0; i < rows; i++ {
+        matrix[i] = make([]float64, cols)
+        for j := 0; j < cols; j++ {
             matrix[i][j] = m.At(i, j)
         }
     }
