@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAuthService_Login_Success(t *testing.T) {
+func Test_Login_Success(t *testing.T) {
 	secret := "my-secret-key"
 	service := NewAuthService(secret)
 
@@ -17,7 +17,6 @@ func TestAuthService_Login_Success(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, tokenString)
 
-	// Validar el token generado
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
@@ -30,26 +29,25 @@ func TestAuthService_Login_Success(t *testing.T) {
 	assert.Equal(t, "admin", claims["user"])
 	assert.Equal(t, "admin", claims["role"])
 	
-	// Validar expiración
 	exp, ok := claims["exp"].(float64)
 	assert.True(t, ok)
 	assert.True(t, exp > float64(time.Now().Unix()))
 }
 
-func TestAuthService_Login_InvalidUser(t *testing.T) {
+func TestLoginUsuarioInvalido(t *testing.T) {
 	service := NewAuthService("secret")
 
-	token, err := service.Login("wronguser", "admin123")
+	token, err := service.Login("usuarioInvalido", "admin123")
 
 	assert.Error(t, err)
 	assert.Equal(t, "credenciales inválidas", err.Error())
 	assert.Empty(t, token)
 }
 
-func TestAuthService_Login_InvalidPassword(t *testing.T) {
+func TestLoginPasswordInvalida(t *testing.T) {
 	service := NewAuthService("secret")
 
-	token, err := service.Login("admin", "wrongpass")
+	token, err := service.Login("admin", "passwordInvalida")
 
 	assert.Error(t, err)
 	assert.Equal(t, "credenciales inválidas", err.Error())
