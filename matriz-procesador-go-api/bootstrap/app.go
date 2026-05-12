@@ -27,8 +27,9 @@ func Initialize(cfg *Config.ConfigStruct) *fiber.App {
 
 
     app.Use(cors.New(cors.Config{
-    AllowOrigins: "*", // Para conectar al frontend, en produccion seria el dominio del frontend
-    AllowHeaders: "Origin, Content-Type, Accept",
+    AllowOrigins: "http://localhost:4200", // Para conectar al frontend, en produccion seria el dominio del frontend
+    AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+    AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 }))
 
     api := app.Group("/api")
