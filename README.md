@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-El sistema toma una matriz matemática, realiza una Factorización QR, y luego calcula estadísticas sobre las matrices resultantes (suma, promedio, comprobación de matriz diagonal, etc.).
+El sistema toma una matriz matemática, realiza una Factorización QR, y luego calcula estadísticas sobre las matrices resultantes (suma, promedio, comprobación de matriz diagonal, etc.). Reto técnico con el tiempo especificado en la rama main Las demás ramás son cambios adicionales que se realizó en tiempos distintos.
 
 ---
 
