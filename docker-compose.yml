@@ -6,6 +6,8 @@ services:
       - "7787:7787"
     environment:
       - PORT=7787
+    networks:
+      - matrix-net
 
   go-api:
     build: ./matriz-procesador-go-api
@@ -17,3 +19,19 @@ services:
       - NODE_API_URL=http://stats-node:7787/stats/calculate
     depends_on:
       - stats-node
+    networks:
+      - matrix-net
+
+  frontend:
+    build: ./matrix-frontend
+    container_name: matrix-frontend-container
+    ports:
+      - "80:80"
+    depends_on:
+      - go-api
+    networks:
+      - matrix-net
+
+networks:
+  matrix-net:
+    driver: bridge

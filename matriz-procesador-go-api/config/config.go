@@ -11,6 +11,7 @@ type ConfigStruct struct {
     PORT         string
     NODE_API_URL string
     JWT_SECRET   string
+    
 }
 
 func Load() *ConfigStruct {
