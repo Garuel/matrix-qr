@@ -19,6 +19,7 @@ export class MatrixComponent {
   matrix = signal<number[][]>(this.generarMatrizVacia(this.size()));
   result = signal<MatrixResponse | null>(null);
   isLoading = signal(false);
+  errorMessage = signal('');
 
   generarMatrizVacia(n: number): number[][] {
     return Array(n)
@@ -32,11 +33,15 @@ export class MatrixComponent {
     this.result.set(null);
   }
 
+  //Estoy optimizando los valores guardados en memoria con signal update y recorriendo toda la matriz de vuelta
   updateValue(row: number, col: number, val: string) {
     const value = Number(val);
-    const current = this.matrix();
-    current[row][col] = value;
-    this.matrix.set([...current]);
+
+    this.matrix.update((currentMatrix) =>
+      currentMatrix.map((r, rowIndex) =>
+        rowIndex === row ? r.map((c, colIndex) => (colIndex === col ? value : c)) : r,
+      ),
+    );
   }
 
   sendMatrix() {
@@ -50,7 +55,7 @@ export class MatrixComponent {
       },
       error: (error) => {
         this.isLoading.set(false);
-        alert('Error al procesar la matriz');
+        this.errorMessage.set('Error al procesar la matriz');
       },
     });
   }

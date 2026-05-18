@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,12 +14,13 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  usuario = signal('');
-  password = signal('');
+  usuario = model('');
+  password = model('');
   errorMessage = signal('');
   isLoading = signal(false);
 
   onSubmit() {
+    if (this.isLoading()) return;
     if (!this.usuario() || !this.password()) {
       this.errorMessage.set('Por favor, completa todos los campos');
       return;
