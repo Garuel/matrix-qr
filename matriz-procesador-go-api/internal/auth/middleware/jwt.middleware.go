@@ -1,6 +1,7 @@
 package auth_middlewares
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,9 +18,11 @@ func JWTMiddleware(secret string) fiber.Handler {
         tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
         token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+            if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+                return nil, fmt.Errorf("método de firma inesperado: %v", token.Header["alg"])
+            }
             return []byte(secret), nil
         })
-
         
 
         if err != nil || !token.Valid {
