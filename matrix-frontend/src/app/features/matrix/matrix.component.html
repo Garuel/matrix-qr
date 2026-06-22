@@ -1,0 +1,82 @@
+<div class="max-w-4xl mx-auto space-y-8">
+  <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold text-white">Configuración de Matriz</h2>
+      <div class="flex items-center gap-3">
+        <span class="text-slate-400 text-sm">Tamaño (N x N):</span>
+        <select
+          [ngModel]="size()"
+          (ngModelChange)="onSizeChange($event)"
+          class="bg-slate-900 border border-slate-700 text-white px-3 py-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option [ngValue]="2">2 x 2</option>
+          <option [ngValue]="3">3 x 3</option>
+          <option [ngValue]="4">4 x 4</option>
+          <option [ngValue]="5">5 x 5</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex justify-center overflow-x-auto py-4">
+      <div
+        class="inline-grid gap-2"
+        [style.grid-template-columns]="'repeat(' + size() + ', minmax(0, 1fr))'"
+      >
+        @for (row of matrix(); track rowIndex; let rowIndex = $index) {
+          @for (cell of row; track colIndex; let colIndex = $index) {
+            <input
+              type="number"
+              [value]="cell"
+              (input)="updateValue(rowIndex, colIndex, $any($event.target).value)"
+              class="w-16 h-16 bg-slate-900 border border-slate-700 rounded-lg text-center text-white text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+            />
+          }
+        }
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center">
+      <button
+        (click)="sendMatrix()"
+        [disabled]="isLoading()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95 disabled:opacity-50"
+      >
+        {{ isLoading() ? 'Procesando en Node.js...' : 'Procesar Matriz' }}
+      </button>
+    </div>
+  </div>
+
+  @if (result()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <p class="text-slate-400 text-sm mb-1">Suma</p>
+        <p class="text-4xl font-bold text-blue-400">{{ result()?.data?.sum }}</p>
+      </div>
+
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <p class="text-slate-400 text-sm mb-1">Max</p>
+        <p class="text-4xl font-bold text-blue-400">{{ result()?.data?.max }}</p>
+      </div>
+
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <p class="text-slate-400 text-sm mb-1">Min</p>
+        <p class="text-4xl font-bold text-blue-400">{{ result()?.data?.min }}</p>
+      </div>
+
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <p class="text-slate-400 text-sm mb-1">Promedio</p>
+        <p class="text-4xl font-bold text-blue-400">{{ result()?.data?.average }}</p>
+      </div>
+
+      <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <p class="text-slate-400 text-sm mb-1">¿Es Matriz Diagonal?</p>
+        <p
+          [class]="result()?.data?.isDiagonal ? 'text-green-400' : 'text-yellow-400'"
+          class="text-4xl font-bold"
+        >
+          {{ result()?.data?.isDiagonal ? 'SÍ' : 'NO' }}
+        </p>
+      </div>
+    </div>
+  }
+</div>

@@ -7,18 +7,21 @@
 
 El sistema toma una matriz matemática, realiza una Factorización QR, y luego calcula estadísticas sobre las matrices resultantes (suma, promedio, comprobación de matriz diagonal, etc.).
 
+La prueba técnica con los tiempos que se estipularon originalmente se encuentra en la rama `main`. Las demás ramas son avances que realicé por voluntad propia para terminar los objetivos opcionales que no pude completar durante ese tiempo.
+
 ---
 
 ## 🏗️ Arquitectura del Sistema
 
-1. **Frontend (Cliente Web):** Una interfaz sencilla en HTML/JS que permite al usuario ingresar una matriz y enviarla a procesar.
-2. **Go API (Core Matemático - Puerto `3000`):** Recibe la matriz del frontend, realiza la factorización QR utilizando la librería matemática `gonum`, y envía los resultados a la API de Node para su análisis.
+1. **Frontend Angular (`matrix-frontend`):** Interfaz web desarrollada en Angular que permite al usuario ingresar una matriz, autenticarse y enviarla a procesar.
+2. **Go API (Core Matemático y Auth - Puerto `3000`):** API protegida con JWT que recibe la matriz del frontend, realiza la factorización QR utilizando la librería matemática `gonum`, y envía los resultados a la API de Node para su análisis.
 3. **Node.js API (Calculadora de Estadísticas - Puerto `7787`):** Recibe las matrices (Q y R), valida los datos enviados con `class-validator`, y calcula las estadísticas, estas son retornadas al servicio de Go para la respuesta final.
 
 ---
 
 ## 🚀 Características Principales
 
+- **Seguridad (Go):** Autenticación mediante JWT para proteger los endpoints principales.
 - **Factorización QR (Go):** Procesamiento matemático eficiente gracias a `gonum`.
 - **Validación (Node.js):** Uso de DTOs y decoradores de `class-validator` para garantizar la integridad de los datos.
 - **CORS Habilitado:** Listo para ser consumido directamente desde la aplicación de frontend.
@@ -28,12 +31,12 @@ El sistema toma una matriz matemática, realiza una Factorización QR, y luego c
 
 ## 🛠️ Tecnologías y Herramientas
 
-| Componente     | Tecnología Principal | Librerías Destacadas                       |
-| :------------- | :------------------- | :----------------------------------------- |
-| **Api 1**      | Go (Golang)          | Fiber (Web Framework), Gonum (Matemáticas) |
-| **Api 2**      | Node.js + TypeScript | Express, Class-Validator, Jest (Testing)   |
-| **Frontend**   | Vanilla JS / HTML    | Fetch API                                  |
-| **Despliegue** | Docker               | Docker Compose, Alpine Images              |
+| Componente     | Tecnología Principal | Librerías Destacadas                     |
+| :------------- | :------------------- | :--------------------------------------- |
+| **Api 1**      | Go (Golang)          | Fiber, JWT (Auth), Gonum (Matemáticas)   |
+| **Api 2**      | Node.js + TypeScript | Express, Class-Validator, Jest (Testing) |
+| **Frontend**   | Angular              | HttpClient, RxJS                         |
+| **Despliegue** | Docker               | Docker Compose, Alpine Images            |
 
 ---
 
@@ -60,7 +63,7 @@ La forma más sencilla de levantar todo el proyecto es utilizando Docker.
 
    > 💡 _Esto levantará de forma orquestada ambas apis: `go-api-container` en el puerto 3000 y `stats-node-container` en el puerto 7787._
 
-3. Abre el archivo `frontend/index.html` en tu navegador para probar la interacción.
+3. Abre `http://localhost` en el navegador para interactuar con el Frontend (puerto 80).
 
 ---
 
@@ -90,11 +93,43 @@ _(El servidor correrá en `http://localhost:3000`)_
 
 ---
 
-## 📡 Endpoint Principal
+### 🔑 Credenciales de Acceso
 
-### 🟢 `POST /api/matrix/process` (Go API)
+El sistema utiliza autenticación en memoria (hardcoded) para fines de esta prueba técnica:
 
-Recibe una matriz nxn, la factoriza en Q y R, y devuelve las matrices junto a las estadísticas calculadas en Node.
+Usuario: admin
+
+Password: admin123
+
+## 📡 Endpoints Principales (Go API)
+
+### 🔐 `POST /api/auth/login`
+
+Genera un token JWT para la autenticación.
+
+**Request:**
+
+```json
+{
+  "usuario": "admin",
+  "password": "admin123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR..."
+}
+```
+
+### 🟢 `POST /api/matrix/process`
+
+Recibe una matriz nxn, la factoriza en Q y R, y devuelve las matrices junto a las estadísticas calculadas en Node. **Requiere token JWT en los headers.**
+
+**Headers:**
+`Authorization: <token_jwt>`
 
 **Request:**
 

@@ -11,10 +11,10 @@ import (
 
 type Handler struct {
     service    Service
-    nodeClient *clients.NodeClient
+    nodeClient clients.NodeClientInterface
 }
 
-func NewHandler(s Service, nc *clients.NodeClient) *Handler {
+func NewHandler(s Service, nc clients.NodeClientInterface) *Handler {
     return &Handler{service: s, nodeClient: nc}
 }
 
@@ -42,7 +42,8 @@ func (h *Handler) FactorizeQR(c *fiber.Ctx) error {
     defer resp.Body.Close()
 
     var nodeResponse interface{}
-    if err := json.NewDecoder(resp.Body).Decode(&nodeResponse); err != nil {
+    if err := json.NewDecoder(resp.Body).Decode(&nodeResponse);
+    err != nil {
         return c.Status(500).JSON(fiber.Map{"error": "Error al decodificar respuesta de Node"})
     }
 

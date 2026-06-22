@@ -1,0 +1,30 @@
+<div class="min-h-screen bg-slate-900 text-white flex flex-col">
+  <nav
+    class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center shadow-lg"
+  >
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold">M</div>
+      <span class="text-xl font-bold tracking-tight"
+        >Matrix<span class="text-blue-500">QR</span></span
+      >
+    </div>
+
+    <div class="flex items-center gap-6">
+      <a routerLink="/matrix" class="text-slate-300 hover:text-white transition-colors"
+        >Procesador</a
+      >
+      @if (authService.estaLoggeado()) {
+        <button
+          (click)="logout()"
+          class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/50 px-4 py-2 rounded-lg transition-all text-sm font-medium"
+        >
+          Cerrar Sesión
+        </button>
+      }
+    </div>
+  </nav>
+
+  <main class="flex-1 container mx-auto p-6">
+    <router-outlet></router-outlet>
+  </main>
+</div>

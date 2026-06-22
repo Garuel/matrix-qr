@@ -8,8 +8,10 @@ import (
 
 
 type ConfigStruct struct {
-    PORT      string
+    PORT         string
     NODE_API_URL string
+    JWT_SECRET   string
+    
 }
 
 func Load() *ConfigStruct {
@@ -18,6 +20,7 @@ _ = godotenv.Load()
     return &ConfigStruct{
         PORT:         getEnv("PORT", "3000"),
         NODE_API_URL: getEnv("NODE_API_URL", "http://localhost:7787/stats/calculate"),
+        JWT_SECRET:   getEnv("JWT_SECRET", "dev-secret-key-jwt"),
     }
 }
 

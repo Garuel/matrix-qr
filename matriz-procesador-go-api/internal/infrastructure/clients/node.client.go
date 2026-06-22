@@ -11,6 +11,11 @@ type NodeClient struct {
     apiUrl string
 }
 
+type NodeClientInterface interface {
+	SendToStats(data interface{}) (*http.Response, error)
+}
+
+
 func NewNodeClient(url string) *NodeClient {
     return &NodeClient{apiUrl: url}
 }
