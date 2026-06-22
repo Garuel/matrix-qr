@@ -8,21 +8,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// almostEqual compara dos float64 con una tolerancia para evitar errores de punto flotante.
 func almostEqual(a, b, tolerance float64) bool {
 	return math.Abs(a-b) < tolerance
 }
 
 // matrizMultiplicar multiplica dos matrices para verificar que Q*R == original.
 func matrizMultiplicar(a, b [][]float64) [][]float64 {
-	n := len(a)
-	m := len(b[0])
-	k := len(b)
-	result := make([][]float64, n)
-	for i := 0; i < n; i++ {
-		result[i] = make([]float64, m)
-		for j := 0; j < m; j++ {
-			for p := 0; p < k; p++ {
+	filasA := len(a)
+	columnasB := len(b[0])
+	filasBColumnasA := len(b)
+	result := make([][]float64, filasA)
+	for i := 0; i < filasA; i++ {
+		result[i] = make([]float64, columnasB)
+		for j := 0; j < columnasB; j++ {
+			for p := 0; p < filasBColumnasA; p++ {
 				result[i][j] += a[i][p] * b[p][j]
 			}
 		}
@@ -67,7 +66,6 @@ func TestFactorizeQR(t *testing.T) {
 		assert.Len(t, res.MatrixQ, 3, "Q debe tener 3 filas")
 		assert.Len(t, res.MatrixR, 3, "R debe tener 3 filas")
 
-		// Verificación matemática: Q * R debe ser aproximadamente igual a la original
 		producto := matrizMultiplicar(res.MatrixQ, res.MatrixR)
 		for i := 0; i < 3; i++ {
 			for j := 0; j < 3; j++ {
@@ -90,7 +88,6 @@ func TestFactorizeQR(t *testing.T) {
 		res, err := s.FactorizeQR(input)
 		require.NoError(t, err)
 
-		// Verificar que R es triangular superior (elementos bajo la diagonal son ~0)
 		for i := 0; i < len(res.MatrixR); i++ {
 			for j := 0; j < i; j++ {
 				assert.True(t, almostEqual(res.MatrixR[i][j], 0, 1e-9),

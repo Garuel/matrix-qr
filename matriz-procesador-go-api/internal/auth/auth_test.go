@@ -70,7 +70,7 @@ func TestLogin(t *testing.T) {
 		require.True(t, ok, "claim 'exp' debe existir y ser numérico")
 
 		expTime := time.Unix(int64(exp), 0)
-		// Tolerancia de 2 segundos por truncamiento de Unix() y overhead de bcrypt
+
 		expectedMin := before.Add(2 * time.Hour).Add(-2 * time.Second)
 		expectedMax := after.Add(2 * time.Hour).Add(2 * time.Second)
 
@@ -159,7 +159,6 @@ func TestLogin_DiferentesSecrets(t *testing.T) {
 		tokenString, err := service.Login("admin", "admin123")
 		require.NoError(t, err)
 
-		// Intentar parsear con un secret diferente debe fallar
 		_, err = jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			return []byte("secret-diferente"), nil
 		})
